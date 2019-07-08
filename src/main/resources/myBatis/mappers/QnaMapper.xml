@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="QnaMapper">
+	<!-- >괄호는 상관 없으나 <괄호는 태그로 인식하기 때문에 다음과 같이 사용할 것 -->
+	<!-- <![CDATA[쿼리문]]> -->
+	<!-- <![CDATA[
+    	SELECT * FROM TABLE WHERE IDX < 10 ORDER BY IDX DESC
+	]]> -->
+	
+	<!-- query 조각 -->
+	<sql id="subRef">
+		(SELECT REF FROM QNA WHERE NUM = #{num})
+	</sql>
+	<sql id="subStep">
+		(SELECT STEP FROM QNA WHERE NUM = #{num})
+	</sql>
+
+	<insert id="setWrite" parameterType="QnaDTO">
+		<selectKey keyProperty="num" resultType="Integer" order="BEFORE">
+			SELECT QNA_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO QNA VALUES(#{num}, #{title}, #{writer}, #{contents}, SYSDATE, 0, #{num}, 0, 0)
+	</insert>
+	<update id="setUpdate" parameterType="QnaDTO">
+		UPDATE QNA SET TITLE = #{title}, CONTENTS = #{contents} where num = #{num}
+	</update>
+	<delete id="setDelete" parameterType="Integer">
+		DELETE QNA WHERE NUM = #{num}
+	</delete>
+	<select id="getList" parameterType="PageMaker" resultType="QnaDTO">
+		SELECT * FROM (SELECT ROWNUM R, Q.* FROM (SELECT * FROM QNA 
+		<choose>
+			<when test="kind = 2">
+				WHERE WRITER 
+			</when><when test="kind = 3">
+				WHERE CONTENTS 
+			</when>
+			<otherwise>
+				WHERE TITLE 
+			</otherwise>
+		</choose>
+		LIKE '%'||#{search}||'%' ORDER BY REF DESC, STEP ASC) Q) WHERE R BETWEEN #{startRow} AND #{lastRow} 
+	</select>
+	<!-- 답글 사전작업 -->
+	<update id="setReplyUpdate" parameterType="QnaDTO">
+		UPDATE QNA SET STEP = STEP + 1 WHERE REF = <include refid="subRef"/> AND STEP > <include refid="subStep"/>
+	</update>
+	<!-- 답글  -->
+	<insert id="setReply" parameterType="QnaDTO">
+		INSERT INTO QNA VALUES(QNA_SEQ.NEXTVAL, #{title}, #{writer}, #{contents}, SYSDATE, 0, <include refid="subRef"/>, <include refid="subStep"/>+1, (SELECT DEPTH FROM QNA WHERE NUM = #{num})+1)
+	</insert>
+	
+	<!-- totalCount Paging 처리 -->
+	<select id="getCount" parameterType="PageMaker" resultType="Integer">
+		SELECT COUNT(NUM) FROM QNA 
+		<choose>
+			<when test="kind = 2">
+				WHERE WRITER 
+			</when>
+			<when test="kind = 3">
+				WHERE CONTENTS 
+			</when>
+			<otherwise>
+				WHERE TITLE 
+			</otherwise>
+		</choose>
+		LIKE '%'||#{search}||'%'
+	</select>
+	
+	<select id="getSelect" parameterType="Integer" resultMap="qnaResult"><!-- FILE이 NULL일 경우 대비 INNER JOIN -> FULL JOIN -->
+		SELECT * FROM QNA Q FULL JOIN FILES F ON(Q.NUM = F.NUM) WHERE Q.NUM = #{num}
+	</select>
+	
+	<!-- Result Map -->
+	<resultMap type="QnaDTO" id="qnaResult">
+		<!-- property : DTO의 멤벼번수명, column : DB의 컬럼명 -->
+		<id property="num" column="num"/>
+		<result property="title" column="title"/>
+		<result property="writer" column="writer"/>
+		<result property="contents" column="contents"/>
+		<result property="reg_date" column="reg_date"/>
+		<result property="hit" column="hit"/>
+		<result property="ref" column="ref"/>
+		<result property="step" column="step"/>
+		<result property="depth" column="depth"/>
+		<collection property="files" javaType="List" ofType="FileDTO" resultMap="fileResult"/>
+	</resultMap>
+	
+	<resultMap type="FileDTO" id="fileResult">
+		<id property="fnum" column="fnum"/>
+		<result property="num" column="num"/>
+		<result property="fname" column="fname"/>
+		<result property="oname" column="oname"/>
+	</resultMap>
+</mapper>
