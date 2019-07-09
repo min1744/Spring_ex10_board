@@ -21,70 +21,67 @@ import com.iu.util.PageMaker;
 @Controller
 @RequestMapping(value = "/qna/")
 public class QnaController {
+	
 	@Inject
 	private QnaService qnaService;
 	
-	//
-	public ModelAndView setDelete(int num, ModelAndView mv) throws Exception{
-		int result = qnaService.setDelete(num);
-		if(result > 0) {
-			mv.setViewName("redirect:./qnaList");
-		} else {
-			mv.addObject("message", "Delete Fail");
-			mv.addObject("path", "./qnaList");
-			mv.setViewName("common/messageMove");
-		}
-		
-		return mv;
+	@RequestMapping(value = "qnaDelete", method = RequestMethod.GET)
+	public String setDelete(int num, HttpSession session)throws Exception{
+		int result = qnaService.setDelete(num, session);
+		return "redirect:./qnaList";
 	}
 	
 	//reply
 	@RequestMapping(value = "qnaReply", method = RequestMethod.POST)
-	public ModelAndView setReply(QnaDTO qnaDTO, RedirectAttributes rd, ModelAndView mv) throws Exception{
+	public ModelAndView setReply(BoardDTO qnaDTO, RedirectAttributes rd)throws Exception{
+		ModelAndView mv = new ModelAndView();
 		int result = qnaService.setReply(qnaDTO);
-		String message = "Reply False";
-		if(result > 0) {
-			message = "Reply Success";
+		String message="Reply False";
+		if(result>0) {
+			message="Reply Success";
 		}
-		rd.addFlashAttribute("message", message);
-		mv.setViewName("redirect:./qnaList");
+		rd.addFlashAttribute("message",message);
 		
+		mv.setViewName("redirect:./qnaList");
 		return mv;
 	}
 	
-	//reply from
+	//reply form
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
-	public ModelAndView setReply(int num, ModelAndView mv) throws Exception{
+	public ModelAndView setReply(int num)throws Exception{
+		ModelAndView mv = new ModelAndView();
 		mv.addObject("num", num);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardReply");
-		
 		return mv;
 	}
 	
-	//update
+	//update 
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.POST)
-	public ModelAndView setUpdate(QnaDTO qnaDTO, List<MultipartFile> f1, HttpSession session, ModelAndView mv) throws Exception{
+	public ModelAndView setUpdate(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session)throws Exception{
 		int result = qnaService.setUpdate(qnaDTO, f1, session);
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:./qnaList");
-		
 		return mv;
 	}
 	
 	//update form
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.GET)
-	public ModelAndView setUpdate(int num, ModelAndView mv) throws Exception{
+	public ModelAndView setUpdate(int num)throws Exception{
+		ModelAndView mv = new ModelAndView();
 		BoardDTO boardDTO = qnaService.getSelect(num);
+		QnaDTO qnaDTO = (QnaDTO)boardDTO;
+		System.out.println("Board Size : "+qnaDTO.getFiles().size());
 		mv.addObject("dto", boardDTO);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardUpdate");
-		
 		return mv;
 	}
 	
+	
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.POST)
-	public ModelAndView setWrite(QnaDTO qnaDTO, List<MultipartFile> f1, HttpSession session) throws Exception{
+	public ModelAndView setWrite(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		int result = qnaService.setWrite(qnaDTO, f1, session);
 		
@@ -97,35 +94,37 @@ public class QnaController {
 		}
 		return mv;
 	}
-	
+
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.GET)
-	public String setWrite(Model model) throws Exception{
+	public String setWrite(Model model)throws Exception{
 		model.addAttribute("board", "qna");
-		
 		return "board/boardWrite";
 	}
 	
 	//select
 	@RequestMapping(value = "qnaSelect", method = RequestMethod.GET)
-	public ModelAndView getSelect(int num, ModelAndView mv) throws Exception{
+	public ModelAndView getSelect(int num)throws Exception{
+		ModelAndView mv = new ModelAndView();
 		BoardDTO boardDTO = qnaService.getSelect(num);
 		mv.addObject("dto", boardDTO);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardSelect");
-		
 		return mv;
 	}
 	
 	//list
 	@RequestMapping(value = "qnaList", method = RequestMethod.GET)
-	public ModelAndView getList(PageMaker pageMaker, ModelAndView mv) throws Exception{
+	public ModelAndView getList(PageMaker pageMaker)throws Exception{
 		List<BoardDTO> lists = qnaService.getList(pageMaker);
+		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", lists);
 		mv.addObject("board", "qna");
 		mv.addObject("pager", pageMaker);
 		mv.setViewName("board/boardList");
-		
 		return mv;
 	}
+	
+	
+
 }

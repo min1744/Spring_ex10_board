@@ -4,80 +4,101 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="QnaMapper">
-	<!-- >괄호는 상관 없으나 <괄호는 태그로 인식하기 때문에 다음과 같이 사용할 것 -->
-	<!-- <![CDATA[쿼리문]]> -->
-	<!-- <![CDATA[
-    	SELECT * FROM TABLE WHERE IDX < 10 ORDER BY IDX DESC
-	]]> -->
-	
-	<!-- query 조각 -->
+	<!-- <![CDATA[ 쿼리문   ]]> -->
+	<!-- query piece -->
 	<sql id="subRef">
-		(SELECT REF FROM QNA WHERE NUM = #{num})
+	<![CDATA[
+		select ref from qna where num=#{num}
+	]]>	
 	</sql>
 	<sql id="subStep">
-		(SELECT STEP FROM QNA WHERE NUM = #{num})
+		select step from qna where num=#{num}
 	</sql>
-
+	
+	<!-- 원본글쓰기 -->
 	<insert id="setWrite" parameterType="QnaDTO">
-		<selectKey keyProperty="num" resultType="Integer" order="BEFORE">
-			SELECT QNA_SEQ.NEXTVAL FROM DUAL
+		<selectKey keyProperty="num" order="BEFORE" resultType="Integer">
+			select qna_seq.nextval from dual
 		</selectKey>
-		INSERT INTO QNA VALUES(#{num}, #{title}, #{writer}, #{contents}, SYSDATE, 0, #{num}, 0, 0)
+		insert into qna values(#{num}, #{title}, #{writer}, #{contents}, sysdate, 0, ${num}, 0, 0)
 	</insert>
+	
 	<update id="setUpdate" parameterType="QnaDTO">
-		UPDATE QNA SET TITLE = #{title}, CONTENTS = #{contents} where num = #{num}
+		update qna set title=#{title}, contents=#{contents} where num = #{num}
 	</update>
+	
 	<delete id="setDelete" parameterType="Integer">
-		DELETE QNA WHERE NUM = #{num}
+		delete qna where num=#{num}
 	</delete>
+	
 	<select id="getList" parameterType="PageMaker" resultType="QnaDTO">
-		SELECT * FROM (SELECT ROWNUM R, Q.* FROM (SELECT * FROM QNA 
+		select * from
+		(select rownum r, q.* from
+		(select * from qna
 		<choose>
+			<when test="kind = 1">			
+				where title
+			</when>
 			<when test="kind = 2">
-				WHERE WRITER 
-			</when><when test="kind = 3">
-				WHERE CONTENTS 
+				where writer
 			</when>
 			<otherwise>
-				WHERE TITLE 
+				where contents
 			</otherwise>
 		</choose>
-		LIKE '%'||#{search}||'%' ORDER BY REF DESC, STEP ASC) Q) WHERE R BETWEEN #{startRow} AND #{lastRow} 
+		like '%'||#{search}||'%'
+		order by ref desc, step asc) q)
+		where r between #{startRow} and #{lastRow}
 	</select>
-	<!-- 답글 사전작업 -->
-	<update id="setReplyUpdate" parameterType="QnaDTO">
-		UPDATE QNA SET STEP = STEP + 1 WHERE REF = <include refid="subRef"/> AND STEP > <include refid="subStep"/>
+	
+	<!-- 답글사전작업 -->
+	<update id="setReplyUpdate" parameterType="BoardDTO">
+		update qna set step=step+1 
+		where ref=(<include refid="subRef"/>)
+		and step>(<include refid="subStep"/>)
 	</update>
-	<!-- 답글  -->
-	<insert id="setReply" parameterType="QnaDTO">
-		INSERT INTO QNA VALUES(QNA_SEQ.NEXTVAL, #{title}, #{writer}, #{contents}, SYSDATE, 0, <include refid="subRef"/>, <include refid="subStep"/>+1, (SELECT DEPTH FROM QNA WHERE NUM = #{num})+1)
+	
+	<!-- reply -->
+	<insert id="setReply" parameterType="BoardDTO">
+		insert into qna values
+		(
+			qna_seq.nextval, #{title}, #{writer}, #{contents}, sysdate, 0,
+			(<include refid="subRef"/>),
+			(<include refid="subStep"/>)+1,
+			(select depth from qna where num=#{num})+1
+		)
 	</insert>
 	
-	<!-- totalCount Paging 처리 -->
+	<!-- totalCount - paging -->
 	<select id="getCount" parameterType="PageMaker" resultType="Integer">
-		SELECT COUNT(NUM) FROM QNA 
+		select count(num) from qna 
 		<choose>
-			<when test="kind = 2">
-				WHERE WRITER 
+			<when test="kind=1">
+				where title
 			</when>
-			<when test="kind = 3">
-				WHERE CONTENTS 
+			<when test="kind=2">
+				where writer
 			</when>
 			<otherwise>
-				WHERE TITLE 
+				where contents
 			</otherwise>
 		</choose>
-		LIKE '%'||#{search}||'%'
+		like '%'||#{search}||'%'
 	</select>
 	
-	<select id="getSelect" parameterType="Integer" resultMap="qnaResult"><!-- FILE이 NULL일 경우 대비 INNER JOIN -> FULL JOIN -->
-		SELECT * FROM QNA Q FULL JOIN FILES F ON(Q.NUM = F.NUM) WHERE Q.NUM = #{num}
+	<select id="getSelect" parameterType="Integer" resultMap="qnaResult">
+		select * from qna Q full join files f
+		on (q.num = f.num)
+		where q.num=#{num}
 	</select>
+	
 	
 	<!-- Result Map -->
+	<!-- property = dto의 멤버변수명
+		 column = db의 컬럼명 -->
 	<resultMap type="QnaDTO" id="qnaResult">
-		<!-- property : DTO의 멤벼번수명, column : DB의 컬럼명 -->
-		<id property="num" column="num"/>
+		<!-- pk -->
+		<id property="num" column="num" />
 		<result property="title" column="title"/>
 		<result property="writer" column="writer"/>
 		<result property="contents" column="contents"/>
@@ -86,7 +107,9 @@
 		<result property="ref" column="ref"/>
 		<result property="step" column="step"/>
 		<result property="depth" column="depth"/>
-		<collection property="files" javaType="List" ofType="FileDTO" resultMap="fileResult"/>
+		<collection property="files" javaType="java.util.List" ofType="FileDTO" resultMap="fileResult">
+			
+		</collection>
 	</resultMap>
 	
 	<resultMap type="FileDTO" id="fileResult">
@@ -95,4 +118,5 @@
 		<result property="fname" column="fname"/>
 		<result property="oname" column="oname"/>
 	</resultMap>
+	
 </mapper>

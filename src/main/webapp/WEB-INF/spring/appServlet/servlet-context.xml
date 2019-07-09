@@ -19,10 +19,28 @@
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="1"/>
 	</beans:bean>
 	
+	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="0" />
+	</beans:bean>
+	
+	<beans:bean class="com.iu.interceptor.QnaInterceptor" id="qnaInterceptor" />
+	<interceptors>
+		<interceptor>
+			<mapping path="/qna/*"/>
+			<beans:ref bean="qnaInterceptor"/>
+		</interceptor>
+	
+	</interceptors>
+	
 	<context:component-scan base-package="com.iu.s10" />
-	<context:component-scan base-package="com.iu.board.qna" />
+	<context:component-scan base-package="com.iu.board.qna"/>
+	<context:component-scan base-package="com.iu.member" />
 	<context:component-scan base-package="com.iu.file" />
 	<context:component-scan base-package="com.iu.util" />
+	<context:component-scan base-package="com.iu.board.notice"/>
+	
+	<!-- <beans:import resource="classpath:/context/config-context.xml"/> -->
 </beans:beans>

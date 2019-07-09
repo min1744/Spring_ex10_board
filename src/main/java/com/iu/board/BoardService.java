@@ -12,7 +12,7 @@ public interface BoardService {
 
 		public int setWrite(BoardDTO boardDTO, List<MultipartFile> multipartFiles, HttpSession session) throws Exception;
 		
-		public int setDelete(int num)throws Exception;
+		public int setDelete(int num, HttpSession session)throws Exception;
 		
 		public int setUpdate(BoardDTO boardDTO, List<MultipartFile> f1, HttpSession session) throws Exception;
 		

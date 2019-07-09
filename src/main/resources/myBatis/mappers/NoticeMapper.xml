@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticeMapper">
+	<select id="totalCount" resultType="java.lang.Integer" parameterType="com.iu.util.PageMaker">
+		<!-- kind : 1(title), 2(writer), 3(contents) -->
+		select count(num) from notice where 
+		<choose>
+			<when test="kind == 1">
+				title
+			</when>
+			<when test="kind == 2">
+				writer
+			</when>
+			<otherwise>
+				contents
+			</otherwise>
+		</choose>
+		like '%'|| #{search} || '%'
+		
+		<!-- <if test="title == '1'">
+			where title like '%'||#{search}||'%'
+		</if>
+		<if test="title =='2' ">
+			where writer like '%'||#{search}||'%'
+		</if>
+		<if test="title =='3'">
+			where contents like '%'||#{search}||'%'
+		</if> -->
+		
+		
+	</select>
+	
+	<select id="noticeList" resultType="com.iu.board.notice.NoticeDTO" parameterType="com.iu.util.PageMaker">
+		select * from
+		(select rownum R, N.* from
+		(select * from notice
+		where
+		
+		<choose>
+			<when test="kind == 1">
+				title
+			</when>
+			<when test="kind == 2">
+				writer
+			</when>
+			<otherwise>
+				contents
+			</otherwise>
+		</choose>
+		like '%'|| #{search} || '%'
+		
+		order by num desc) N)
+		where R between #{startRow} and #{lastRow}
+	</select>
+	
+	<resultMap type="com.iu.board.notice.NoticeDTO" id="notice">
+		<id property="num" column="num"/>
+		<result property="title" column="title"/>
+		<result property="writer" column="writer"/>
+		<result property="contents" column="contents"/>
+		<result property="reg_date" column="reg_date"/>
+		<result property="hit" column="hit"/>
+		
+		<collection property="files" resultMap="fileResult" ofType="com.iu.file.FileDTO" javaType="java.util.ArrayList" >
+			
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.iu.file.FileDTO" id="fileResult">
+		<id property="fnum" column="fnum"/>
+		<result property="fname" column="fname"/>
+		<result property="oname" column="oname"/>
+	</resultMap>
+
+	<select id="noticeSelect" resultMap="notice"  parameterType="Integer">
+		select N.*, F.*
+		from notice N full join files F
+		on (N.num=F.num)
+		where N.num=#{num}
+	</select>
+	
+	
+	
+
+	<insert id="noticeWrite" parameterType="NoticeDTO">
+		<selectKey  keyProperty="num" resultType="java.lang.Integer" order="BEFORE">
+			select notice_seq.nextval from dual
+		</selectKey>
+		insert into notice values(#{num},#{title},#{writer},#{contents},sysdate,0) 
+	</insert>
+	
+	<update id="noticeUpdate" parameterType="NoticeDTO">
+		update notice set title=#{title}, contents=#{contents} where num=#{num}
+	</update>
+	
+	<delete id="noticeDelete" parameterType="Integer" >
+		delete notice where num=#{num}
+	</delete>
+		
+</mapper>

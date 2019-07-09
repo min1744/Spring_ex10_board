@@ -7,11 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <c:import url="../temp/boot.jsp" />
+<c:import url="../temp/summernote.jsp" />
 </head>
 <body>
 	<div class="container">
 		<h1>${board} Write Form</h1>
-		<form action="./${board}Write" method="post" enctype="multipart/form-data">
+		<form id="frm" action="./${board}Write" method="post" enctype="multipart/form-data">
 		    
 		    <div class="form-group">
 		      <label for="writer">Writer:</label>
@@ -25,7 +26,7 @@
 		    
 		     <div class="form-group">
 		      <label for="contents">Contents:</label>
-		      <textarea class="form-control" rows="15" cols="" name="contents"></textarea>
+		      <textarea class="form-control" id="contents" rows="15" cols="" name="contents"></textarea>
 		    </div>
 		    
 		    <div>
@@ -33,11 +34,12 @@
 		    	<div id="files"></div>
 		    </div>
 		    
-		    <button type="submit" class="btn btn-default">Submit</button>
+		    <input type="button" id="write" class="btn btn-default" value="Write">
 		  </form>
 	
 	</div>
 	
+	<script type="text/javascript" src="../resources/js/summernote.js"></script>
 	<script type="text/javascript">
 		var count=0;
 	
@@ -58,5 +60,7 @@
 		});
 	
 	</script>
+	
+
 </body>
 </html>
