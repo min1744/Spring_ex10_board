@@ -9,10 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.iu.util.PageMaker;
 
 public interface BoardService {
-	//글 등록
+
 		public int setWrite(BoardDTO boardDTO, List<MultipartFile> multipartFiles, HttpSession session) throws Exception;
 		
-		public int setDelete(int num)throws Exception;
+		public int setDelete(int num, HttpSession session)throws Exception;
 		
 		public int setUpdate(BoardDTO boardDTO, List<MultipartFile> f1, HttpSession session) throws Exception;
 		

@@ -13,20 +13,21 @@ import com.iu.util.PageMaker;
 
 @Repository
 public class QnaDAO implements BoardDAO{
-
-	@Inject//or @Autowired
+	
+	@Inject
 	private SqlSession sqlSession;
-	private static final String NAMESPACE = "QnaMapper.";
+	private static final String NAMESPACE="QnaMapper.";
 	
 	//답글 사전작업
-	public int setReplyUpdate(QnaDTO qnaDTO) throws Exception{
+	public int setReplyUpdate(BoardDTO qnaDTO) throws Exception{
 		return sqlSession.update(NAMESPACE+"setReplyUpdate", qnaDTO);
 	}
-	//답글
-	public int setReply(QnaDTO qnaDTO) throws Exception{
+	
+	//답글 달기
+	public int setReply(BoardDTO qnaDTO) throws Exception{
 		return sqlSession.insert(NAMESPACE+"setReply", qnaDTO);
 	}
-	
+
 	@Override
 	public int getTotalCount(PageMaker pageMaker) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"getCount", pageMaker);
@@ -34,6 +35,7 @@ public class QnaDAO implements BoardDAO{
 
 	@Override
 	public int setWrite(BoardDTO boardDTO) throws Exception {
+		System.out.println(boardDTO.getNum());
 		return sqlSession.insert(NAMESPACE+"setWrite", boardDTO);
 	}
 
@@ -49,11 +51,13 @@ public class QnaDAO implements BoardDAO{
 
 	@Override
 	public BoardDTO getSelect(int num) throws Exception {
-		return sqlSession.selectOne(NAMESPACE+"getSelect", num);
+		return sqlSession.selectOne(NAMESPACE+"getSelect",num);
 	}
 
 	@Override
 	public List<BoardDTO> getList(PageMaker pageMaker) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"getList", pageMaker);
 	}
+
+	
 }

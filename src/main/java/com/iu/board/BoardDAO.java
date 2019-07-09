@@ -10,7 +10,6 @@ import com.iu.util.PageMaker;
 
 public interface BoardDAO {
 	
-	//글 등록
 	public int getTotalCount(PageMaker pageMaker)throws Exception;
 	
 	public int setWrite(BoardDTO boardDTO) throws Exception;

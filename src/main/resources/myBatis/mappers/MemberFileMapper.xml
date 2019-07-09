@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberFileMapper">
+
+	<insert id="setWrite" parameterType="com.iu.file.MemberFileDTO">
+		insert into memberfile values(notice_seq.nextval, #{id}, #{fname}, #{oname})
+	</insert>
+	
+	<select id="getSelect" parameterType="com.iu.member.MemberDTO" resultType="com.iu.file.MemberFileDTO">
+		select * from memberfile where id=#{id}
+	</select>
+	
+		
+</mapper>

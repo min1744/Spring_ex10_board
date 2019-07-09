@@ -12,17 +12,28 @@ public class FileDAO {
 	
 	@Inject
 	private SqlSession sqlSession;
-	private static final String NAMESPACE = "FileMapper.";
+	private static final String NAMESPACE="FileMapper.";
 	
 	public int setWrite(List<FileDTO> files) throws Exception{
-		return sqlSession.insert(NAMESPACE+"setWrite", files);
+		for(FileDTO f:files) {
+			System.out.println(f.getNum());
+			System.out.println(f.getFname());
+			System.out.println(f.getOname());
+		}
+		int res = sqlSession.insert(NAMESPACE+"setWrite",files);
+		return res;
 	}
 	
 	public int setUpdate(FileDTO fileDTO) throws Exception{
-		return sqlSession.update(NAMESPACE+"setUpdate", fileDTO);
+		int res = sqlSession.update(NAMESPACE+"setUpdate", fileDTO);
+		return res;
 	}
 	
-	public int setDelete(int fnum) throws Exception{
+	public int setDeleteAll(int num)throws Exception{
+		return sqlSession.delete(NAMESPACE+"setDeleteAll", num);
+	}
+	
+	public int setDelete(int fnum) throws Exception {
 		return sqlSession.delete(NAMESPACE+"setDelete", fnum);
 	}
 	
@@ -33,4 +44,5 @@ public class FileDAO {
 	public List<FileDTO> getList(int num) throws Exception{
 		return sqlSession.selectList(NAMESPACE+"getList", num);
 	}
+	
 }

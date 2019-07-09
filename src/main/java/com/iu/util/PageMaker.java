@@ -1,7 +1,7 @@
 package com.iu.util;
 
 public class PageMaker {
-	private int perPage=5;
+	private int perPage=10;
 	private Integer curPage;
 	private String kind;//title, writer, contents
 	private String search;
