@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,13 @@ public class QnaController {
 	
 	@Inject
 	private QnaService qnaService;
+	
+	//model.addAttribute("board","qna") 
+	@ModelAttribute("board")
+	public String board() {
+		return "qna";
+	} 
+	
 	
 	@RequestMapping(value = "qnaDelete", method = RequestMethod.GET)
 	public String setDelete(int num, HttpSession session)throws Exception{
@@ -51,7 +59,7 @@ public class QnaController {
 	public ModelAndView setReply(int num)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("num", num);
-		mv.addObject("board", "qna");
+		//mv.addObject("board", "qna");
 		mv.setViewName("board/boardReply");
 		return mv;
 	}
@@ -59,8 +67,8 @@ public class QnaController {
 	//update 
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.POST)
 	public ModelAndView setUpdate(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session)throws Exception{
-		int result = qnaService.setUpdate(qnaDTO, f1, session);
 		ModelAndView mv = new ModelAndView();
+		int result = qnaService.setUpdate(qnaDTO, f1, session);
 		mv.setViewName("redirect:./qnaList");
 		return mv;
 	}
@@ -73,7 +81,7 @@ public class QnaController {
 		QnaDTO qnaDTO = (QnaDTO)boardDTO;
 		System.out.println("Board Size : "+qnaDTO.getFiles().size());
 		mv.addObject("dto", boardDTO);
-		mv.addObject("board", "qna");
+		//mv.addObject("board", "qna");
 		mv.setViewName("board/boardUpdate");
 		return mv;
 	}
@@ -98,7 +106,7 @@ public class QnaController {
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.GET)
 	public String setWrite(Model model)throws Exception{
-		model.addAttribute("board", "qna");
+		//model.addAttribute("board", "qna");
 		return "board/boardWrite";
 	}
 	
@@ -108,7 +116,6 @@ public class QnaController {
 		ModelAndView mv = new ModelAndView();
 		BoardDTO boardDTO = qnaService.getSelect(num);
 		mv.addObject("dto", boardDTO);
-		mv.addObject("board", "qna");
 		mv.setViewName("board/boardSelect");
 		return mv;
 	}
@@ -116,15 +123,13 @@ public class QnaController {
 	//list
 	@RequestMapping(value = "qnaList", method = RequestMethod.GET)
 	public ModelAndView getList(PageMaker pageMaker)throws Exception{
+		
 		List<BoardDTO> lists = qnaService.getList(pageMaker);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", lists);
-		mv.addObject("board", "qna");
+		//mv.addObject("board", "qna");
 		mv.addObject("pager", pageMaker);
 		mv.setViewName("board/boardList");
 		return mv;
 	}
-	
-	
-
 }

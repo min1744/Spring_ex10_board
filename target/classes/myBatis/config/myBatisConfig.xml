@@ -9,5 +9,6 @@
 		<typeAlias type="com.iu.board.BoardDTO" alias="BoardDTO"/>
 		<typeAlias type="com.iu.board.notice.NoticeDTO" alias="NoticeDTO"/>
 		<typeAlias type="com.iu.member.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.iu.file.MemberFileDTO" alias="memberFileDTO"/>
 	</typeAliases>
 </configuration>

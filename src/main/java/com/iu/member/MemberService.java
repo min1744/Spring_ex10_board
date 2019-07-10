@@ -1,6 +1,8 @@
 package com.iu.member;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.iu.file.MemberFileDAO;
 import com.iu.file.MemberFileDTO;
 import com.iu.util.FileSaver;
+import com.iu.util.PageMaker;
 
 @Service
 public class MemberService {
@@ -21,6 +24,19 @@ public class MemberService {
 	private FileSaver fileSaver;
 	@Inject
 	private MemberFileDAO memberFileDAO;
+	
+	//deleteAll
+	public int setDelete(String [] id) throws Exception{
+		List<String> list = Arrays.asList(id);
+		return memberDAO.setDelete(list);
+	}
+	
+	public List<MemberDTO> getList(PageMaker pageMaker) throws Exception{
+		pageMaker.makeRow();
+		pageMaker.makePage(memberDAO.getTotalCount(pageMaker));
+		
+		return memberDAO.getList(pageMaker);
+	}
 	
 	public int setWrite(MemberDTO memberDTO, MultipartFile photo, HttpSession session)throws Exception{
 		//1.저장 경로
@@ -41,5 +57,7 @@ public class MemberService {
 		return memberDAO.getSelect(memberDTO);
 	}
 	
-
+	public int setDelete(List<String> list) throws Exception{
+		return memberDAO.setDelete(list);
+	}
 }

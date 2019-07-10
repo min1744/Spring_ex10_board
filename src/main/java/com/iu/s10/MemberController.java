@@ -1,11 +1,14 @@
 package com.iu.s10;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.member.MemberDTO;
 import com.iu.member.MemberService;
+import com.iu.util.PageMaker;
 
 @Controller
 @RequestMapping("/member/")
@@ -21,6 +25,20 @@ public class MemberController {
 	@Inject
 	private MemberService memberService;
 	
+	//adminPage
+	
+	@RequestMapping(value = "memberAdmin", method = RequestMethod.POST)
+	public String memberAdmin(String [] id) throws Exception{
+		memberService.setDelete(id);
+		return "redirect:./memberAdmin";
+	}
+	
+	@RequestMapping(value = "memberAdmin", method = RequestMethod.GET)
+	public void memberAdmin(PageMaker pageMaker, Model model)throws Exception{
+		List<MemberDTO> list = memberService.getList(pageMaker);
+		model.addAttribute("list", list);
+		model.addAttribute("pager", pageMaker);
+	}
 	
 	//memberPage
 	@RequestMapping(value="memberPage")
@@ -76,10 +94,4 @@ public class MemberController {
 		mv.addObject("path", "../");
 		return mv;
 	}
-
 }
-
-
-
-
-
