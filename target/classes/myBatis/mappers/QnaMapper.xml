@@ -15,6 +15,10 @@
 		select step from qna where num=#{num}
 	</sql>
 	
+	<update id="hitUpdate" parameterType="Integer">
+		update qna set hit = hit + 1 where num = #{num}
+	</update>
+	
 	<!-- 원본글쓰기 -->
 	<insert id="setWrite" parameterType="QnaDTO">
 		<selectKey keyProperty="num" order="BEFORE" resultType="Integer">

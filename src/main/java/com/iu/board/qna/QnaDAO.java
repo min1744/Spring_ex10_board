@@ -17,6 +17,10 @@ public class QnaDAO implements BoardDAO{
 	private SqlSession sqlSession;
 	private static final String NAMESPACE="QnaMapper.";
 	
+	public int hitUpdate(int num) throws Exception{
+		return sqlSession.update(NAMESPACE+"hitUpdate", num);
+	}
+	
 	//답글 사전작업
 	public int setReplyUpdate(BoardDTO qnaDTO) throws Exception{
 		return sqlSession.update(NAMESPACE+"setReplyUpdate", qnaDTO);
