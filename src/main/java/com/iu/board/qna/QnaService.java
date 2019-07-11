@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.board.BoardDTO;
@@ -16,6 +17,7 @@ import com.iu.file.FileDTO;
 import com.iu.util.FileSaver;
 import com.iu.util.PageMaker;
 
+@Transactional
 @Service
 public class QnaService implements BoardService {
 
@@ -31,7 +33,9 @@ public class QnaService implements BoardService {
 		
 		// qna Insert
 		int res = qnaDAO.setWrite(boardDTO);
-		
+		if(res > 0) {
+			throw new Exception();
+		}
 		// files Insert
 		String realPath=session.getServletContext().getRealPath("/resources/qna");
 		// num = boardDTO.getNum();
