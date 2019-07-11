@@ -15,7 +15,6 @@ import org.springframework.web.servlet.view.AbstractView;
 
 import com.iu.file.FileDTO;
 
-@Component
 public class FileDown extends AbstractView {
 
 	@Override

@@ -10,6 +10,8 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- Inject, Autowired 등을 인식시켜주는 역할 -->
+	<!-- 컴포넌트 스캔이 있으면 없어도 상관X -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
@@ -27,6 +29,7 @@
 	</beans:bean>
 	
 	<beans:bean class="com.iu.interceptor.QnaInterceptor" id="qnaInterceptor" />
+	
 	<interceptors>
 		<interceptor>
 			<mapping path="/qna/*"/>
@@ -38,12 +41,16 @@
 		</interceptor>
 	</interceptors>
 	
+	<!-- properties 파일 설정 -->
+	<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceholderConfigurer">
+		<beans:property name="locations" value="classpath:properties/DataSource.properties" ></beans:property>
+	</beans:bean>
+	
 	<context:component-scan base-package="com.iu.s10" />
-	<context:component-scan base-package="com.iu.board.qna"/>
 	<context:component-scan base-package="com.iu.member" />
 	<context:component-scan base-package="com.iu.file" />
-	<context:component-scan base-package="com.iu.util" />
 	<context:component-scan base-package="com.iu.board.notice"/>
+	<beans:import resource="classpath:/spring/*"/>
 	
 	<!-- <beans:import resource="classpath:/context/config-context.xml"/> -->
 </beans:beans>

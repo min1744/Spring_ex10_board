@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-@Component
 public class FileSaver {
 
 	// 1. Spring에서 제공하는 FileCopyUtils 클래스의 copy 메서드 사용

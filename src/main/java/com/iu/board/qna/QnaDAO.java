@@ -11,7 +11,6 @@ import com.iu.board.BoardDAO;
 import com.iu.board.BoardDTO;
 import com.iu.util.PageMaker;
 
-@Repository
 public class QnaDAO implements BoardDAO{
 	
 	@Inject
