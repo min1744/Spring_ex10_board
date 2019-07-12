@@ -11,6 +11,7 @@ $("#write").click(function() {
 });
 
 $("#contents").summernote({
+	height:800,
 	callbacks: {
 		onImageUpload: function(files) {
 			// upload image to server and create imgNode...

@@ -26,5 +26,7 @@
 		<a href="./member/memberLogin">Member Login</a>
 	</c:otherwise>
 </c:choose>
+<a href="./mall/productList">Product List</a>
+<a href="./mall/productAdd">Product Add</a>
 </body>
 </html>

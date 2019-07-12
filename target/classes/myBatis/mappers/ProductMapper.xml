@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProductMapper">
+	<resultMap type="ProductVO" id="listResult">
+		<id property="pid" column="pid"/>
+		<result property="category" column="category"/>
+		<result property="title" column="title"/>
+		<result property="price" column="price"/>
+		<result property="subContents" column="subContents"/>
+		<result property="mainContents" column="mainContents"/>
+		<result property="amount" column="amount"/>
+		<result property="reg_date" column="reg_date"/>
+		<collection property="nailVOs" javaType="List" ofType="thumbnailVO">
+			<id property="num" column="num"/>
+			<result property="fname" column="fname"/>
+			<result property="oname" column="oname"/>
+		</collection>
+	</resultMap>
+	<select id="getList" parameterType="PageMaker" resultMap="listResult">
+		select * from (select rownum R, Products.* from (select P.*, T.num, T.fname, T.oname from product P FULL JOIN thumbnail T on(P.pid = T.pid)
+		where
+		<choose>
+			<when test="kind == 2">
+				P.title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 3">
+				P.mainContents like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				P.title like '%'||#{search}||'%' or P.mainContents like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+		order by P.reg_date desc) Products) where R between #{startRow} and #{lastRow}
+	</select>
+	<insert id="setWrite" parameterType="ProductVO">
+		insert into product values(#{pid}, #{category}, #{title}, #{price}, #{subContents}, #{mainContents}, #{amount}, sysdate)
+	</insert>
+</mapper>

@@ -16,7 +16,9 @@ public class PageMaker {
 	private int startNum;
 	private int lastNum;
 
-	
+	public void setPerPage(int perPage) {
+		this.perPage = perPage;
+	}
 	public int getTotalBlock() {
 		return totalBlock;
 	}

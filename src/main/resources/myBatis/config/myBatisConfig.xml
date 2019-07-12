@@ -10,5 +10,8 @@
 		<typeAlias type="com.iu.board.notice.NoticeDTO" alias="NoticeDTO"/>
 		<typeAlias type="com.iu.member.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.iu.file.MemberFileDTO" alias="memberFileDTO"/>
+		<typeAlias type="com.iu.mall.product.ProductVO" alias="productVO"/>
+		<typeAlias type="com.iu.mall.product.OptionsVO" alias="optionsVO"/>
+		<typeAlias type="com.iu.mall.product.ThumbnailVO" alias="thumbnailVO"/>
 	</typeAliases>
 </configuration>

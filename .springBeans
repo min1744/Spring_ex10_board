@@ -11,6 +11,7 @@
 		<config>src/main/resources/spring/context-file.xml</config>
 		<config>src/main/resources/spring/context-qna.xml</config>
 		<config>src/main/resources/spring/context-common.xml</config>
+		<config>src/main/resources/spring/context-notice.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
