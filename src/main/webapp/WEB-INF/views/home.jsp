@@ -17,6 +17,7 @@
 <c:choose>
 	<c:when test="${not empty member}">
 		<a href="./member/memberLogout">Member Logout</a>
+		<a href="./cart/cartList">Cart List</a>
 		<c:if test="${member.grade eq 0}">
 			<a href="./member/memberAdmin">Admin Page</a>
 		</c:if>

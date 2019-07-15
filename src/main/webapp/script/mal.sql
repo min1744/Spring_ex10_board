@@ -1,7 +1,32 @@
+select * from cart C inner join product P on (C.pid = P.pid) inner join options O on(C.options = O.num) where C.id = 'admin'
+
+create table cart(
+num number(8),
+id varchar2(400),
+pid varchar2(400),
+options number(8),
+amount number(8),
+constraint cart_num_pk primary key(num),
+constraint cart_id_fk foreign key(id) references member(id) on delete cascade,
+constraint cart_pid_fk foreign key(pid) references product(pid) on delete set null
+)
+
+select * from cart
+commit
+
+delete cart
+	
 select * from options
+select * from product
+B1562918711576
 
-insert into options values(product_seq.nextval, 't24165', 'White')
+insert into options values(product_seq.nextval, 'B1562918711576', 'White')
 
+ T1563151766460 T        adf     123 sadfas
+  B1562918711576 B        adsaf 12312 asdfsa
+
+ 
+ 
 CREATE TABLE Product
 (
     Pid             VARCHAR2(400)    NOT NULL, 

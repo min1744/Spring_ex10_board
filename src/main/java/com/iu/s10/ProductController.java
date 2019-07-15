@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.mall.product.ProductService;
 import com.iu.mall.product.ProductVO;
+import com.iu.util.PageMaker;
 
 @Controller
 @RequestMapping("/mall/")
@@ -44,6 +45,31 @@ public class ProductController {
 		map.put("B", "미용");
 		
 		return map;
+	}
+	
+	@RequestMapping(value = "productSelect", method = RequestMethod.GET)
+	public ModelAndView productSelect(ProductVO productVO, ModelAndView mv) throws Exception{
+		productVO = productService.getSelect(productVO);
+		if(productVO != null) {
+			mv.addObject("product", productVO);
+			mv.setViewName("mall/productSelect");
+		} else {
+			mv.addObject("message", "No Product");
+			mv.addObject("path", "./productList");
+			mv.setViewName("common/messageMove");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "productList", method = RequestMethod.GET)
+	public ModelAndView productList(PageMaker pageMaker, ModelAndView mv) throws Exception{
+		List<ProductVO> list = productService.getList(pageMaker);
+		mv.addObject("productList", list);
+		mv.addObject("pager", pageMaker);
+		mv.setViewName("mall/productList");
+		
+		return mv;
 	}
 	
 	@RequestMapping(value = "productAdd", method = RequestMethod.POST)

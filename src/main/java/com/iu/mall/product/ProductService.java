@@ -27,15 +27,19 @@ public class ProductService {
 	@Inject
 	private FileSaver fileSaver;
 	
+	//select
+	public ProductVO getSelect(ProductVO productVO) throws Exception{
+		return productDAO.getSelect(productVO);
+	}
+	
 	//list
 	public List<ProductVO> getList(PageMaker pageMaker) throws Exception{
 		pageMaker.setPerPage(9);
 		pageMaker.makeRow();
-		int totalCount = 0;
+		int totalCount = productDAO.getCount(pageMaker);
 		pageMaker.makePage(totalCount);
-		List<ProductVO> ar = productDAO.getList(pageMaker);
 		
-		return ar;
+		return productDAO.getList(pageMaker);
 	}
 	
 	//write

@@ -16,6 +16,14 @@ public class ProductDAO {
 	private SqlSession sqlSession;
 	private static final String NAMESPACE = "ProductMapper.";
 	
+	public ProductVO getSelect(ProductVO productVO) throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"getSelect", productVO);
+	}
+	
+	public int getCount(PageMaker pageMaker) throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"getCount", pageMaker);
+	}
+	
 	public List<ProductVO> getList(PageMaker pageMaker) throws Exception{
 		return sqlSession.selectList(NAMESPACE+"getList", pageMaker);
 	}

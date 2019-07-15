@@ -15,7 +15,14 @@ public class ProductVO {
 	private int amount;
 	private Date reg_date;
 	private List<ThumbnailVO> nailVOs;
+	private List<OptionsVO> optionsVOs;
 	
+	public List<OptionsVO> getOptionsVOs() {
+		return optionsVOs;
+	}
+	public void setOptionsVOs(List<OptionsVO> optionsVOs) {
+		this.optionsVOs = optionsVOs;
+	}
 	public List<ThumbnailVO> getNailVOs() {
 		return nailVOs;
 	}
@@ -64,10 +71,10 @@ public class ProductVO {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public Data getReg_date() {
+	public Date getReg_date() {
 		return reg_date;
 	}
-	public void setReg_date(Data reg_date) {
+	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
 }

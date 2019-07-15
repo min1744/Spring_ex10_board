@@ -3,6 +3,29 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ProductMapper">
+	<select id="getCount" resultType="Integer" parameterType="pageMaker">
+		select count(pid) from product
+		where
+		<choose>
+			<when test="kind == 2">
+				title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 3">
+				mainContents like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				title like '%'||#{search}||'%' or mainContents like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getSelect" parameterType="ProductVO" resultMap="listResult">
+		select P.*, T.fname, T.oname, T.num, O.num as Onum, O.contents
+		from product P Full join thumbnail T on (P.pid = T.pid)
+		Full join Options O on (P.pid = O.pid)
+		where P.pid = #{pid}
+	</select>
+
 	<resultMap type="ProductVO" id="listResult">
 		<id property="pid" column="pid"/>
 		<result property="category" column="category"/>
@@ -12,10 +35,14 @@
 		<result property="mainContents" column="mainContents"/>
 		<result property="amount" column="amount"/>
 		<result property="reg_date" column="reg_date"/>
-		<collection property="nailVOs" javaType="List" ofType="thumbnailVO">
+		<collection property="nailVOs" javaType="List" ofType="ThumbnailVO">
 			<id property="num" column="num"/>
 			<result property="fname" column="fname"/>
 			<result property="oname" column="oname"/>
+		</collection>
+		<collection property="optionsVOs" javaType="List" ofType="OptionsVO">
+			<id  property="num" column="onum"/>
+			<result property="contents" column="contents"/>
 		</collection>
 	</resultMap>
 	<select id="getList" parameterType="PageMaker" resultMap="listResult">

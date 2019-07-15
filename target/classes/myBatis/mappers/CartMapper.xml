@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CartMapper">
+	<update id="setUpdate" parameterType="CartVO">
+		update cart set amount = #{amount} where num = #{num}
+	</update>
+	
+	<select id="getList" parameterType="String" resultType="CartListVO">
+		select C.num, P.title, O.contents, C.amount, P.price from cart C inner join product P on (C.pid = P.pid) inner join options O on(C.options = O.num) where C.id = #{id}
+	</select>
+	
+	<insert id="setWrite" parameterType="CartVO">
+		insert into cart values(product_seq.nextval, #{id}, #{pid}, #{options}, #{amount})
+	</insert>
+</mapper>
