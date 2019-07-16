@@ -120,7 +120,7 @@
 				url:"../productQna/productQnaList/T1563151766460",
 				type:"GET",
 				success:function(data){//[{"contents":"t2","writer":"t2"},{"contents":"t1","writer":"t1"}]
-					data = JSON.parse(data);//문자열을 JSON으로 변환
+					//data = JSON.parse(data); : 문자열을 JSON으로 변환
 					//JSON.stringify(obj); : JSON을 문자열로 변환
 					var r = '<table class="table table-hover">';
 					$(data).each(function() {
