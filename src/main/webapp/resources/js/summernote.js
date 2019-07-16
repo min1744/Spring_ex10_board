@@ -10,6 +10,10 @@ $("#write").click(function() {
 	}
 });
 
+$("#contents2").summernote({
+	toolbar:[]
+});
+
 $("#contents").summernote({
 	height:800,
 	callbacks: {

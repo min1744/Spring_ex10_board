@@ -21,8 +21,8 @@
 				<td>합계</td>
 			</tr>
 			<c:forEach items="${cartList}" var="cart" varStatus="i">
-				<tr>
-					<td><input type="checkbox" class="check"></td>
+				<tr id="del${i.index}">
+					<td><input type="checkbox" title="del${i}" class="check" value="${cart.num}" name="nums"></td>
 					<td>${cart.title}</td>
 					<td>${cart.contents}</td>
 					<td><input type="number" id="amount${i.index}" class="amount" value="${cart.amount}"><input title="amount${i.index}" data-num="${cart.num}" class="updateCart" type="button" value="수정"> </td>
@@ -54,22 +54,32 @@
 		
 		$("#deleteBtn").click(function() {
 			var nums = [];
+			var del = [];
 			$(".check").each(function() {
-				if ($(this).prop("checked")) {
-					ids.push($(this).val());
+				if($(this).prop("checked")) {
+					nums.push($(this).val());
+					del.push($(this).attr("title"));
 				}
 			});
 			//ajax로 배열을 전송하고자 할때 추가
 			jQuery.ajaxSettings.traditional = true;
 
 			$.ajax({
-				url : "./cartList",
+				url : "./cartDelete",
 				type : "POST",
 				data : {
-					num : nums
+					nums : nums
 				},
 				success : function(data) {
-					location.reload();
+					if(data == '0'){
+						alert('장바구니 삭제 실패');
+					} else {
+						for(var i = 0;i < del.length; i++){
+							$("#"+del[i]).remove();
+						}
+						//location.reload();
+						alert('장바구니 삭제 성공');
+					}
 				},
 				error : function() {
 					console.log('error');
@@ -90,14 +100,11 @@
 				},
 				success:function(data){
 					//data : 0 이면 실패, 1 이면 성공
-					var result = confirm("정말 수정하시겠습니까?");
-					if(result){
-						if(data == '1'){
-							alert('장바구니 수정 성공');
-							location.reload();
-						} else {
-							alert('장바구니 수정 실패');
-						}
+					if(data == '1'){
+						alert('장바구니 수정 성공');
+						location.reload();
+					} else {
+						alert('장바구니 수정 실패');
 					}
 				}
 			});

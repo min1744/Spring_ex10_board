@@ -23,8 +23,9 @@ public class CartController {
 	private CartService cartService;
 	
 	@RequestMapping(value = "cartDelete", method = RequestMethod.POST)
-	public int cartDelete(int [] num) throws Exception{
-		
+	@ResponseBody
+	public int cartDelete(Integer [] nums) throws Exception{
+		return cartService.setDelete(nums);
 	}
 	
 	@RequestMapping(value = "cartUpdate", method = RequestMethod.POST)

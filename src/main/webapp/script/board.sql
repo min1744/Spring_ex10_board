@@ -1,10 +1,38 @@
-select * from memberfile;
+create table productqna(
+num number(8),
+title varchar2(400),
+writer varchar2(400),
+contents CLOB,
+reg_date date,
+hit number(8),
+ref number(8),
+step number(8),
+depth number(8),
+pid varchar2(400),
+constraint pqna_num_pk primary key (num)
+)
 
-delete MEMBERFILE where id in ('t1', 't3')
+insert into productqna values(product_seq.nextval, 't3', 't3', 't3', sysdate, 0, product_seq.currval, 0, 0, 'B1562918711576')
+
+select * from 
+	(select rownum r, P.* from 
+		(select * from productqna where pid = 'T1563151766460' order by ref desc, step asc) 
+	P) 
+where r between 1 and 10
+
+select * from productqna where num = #{num}
+
+select * from productqna
+select * from memberfile
+select * from member
+select * from seq;
+select * from product
+
+B1562918711576
+T1563151766460
+
 
 commit
-
-select * from member
 
 select * from
 		(select rownum R, MEM.* from

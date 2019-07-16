@@ -79,7 +79,7 @@
 		</choose>
 		like '%'||#{search}||'%'
 	</select>
-	<delete id="setDelete" parameterType="java.util.List">
+	<delete id="setDelete" parameterType="List">
 		delete member where id in
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			#{item}

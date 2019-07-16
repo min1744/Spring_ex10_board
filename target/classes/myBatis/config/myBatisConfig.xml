@@ -4,12 +4,15 @@
 	<typeAliases>
 		<typeAlias type="java.lang.String" alias="String"/>
 		<typeAlias type="java.lang.Integer" alias="Integer"/>
-		<typeAlias type="com.iu.board.qna.QnaDTO" alias="QnaDTO"/>
-		<typeAlias type="com.iu.file.FileDTO" alias="FileDTO"/>
+		<typeAlias type="java.util.List" alias="List"/>
+		<typeAlias type="java.util.Map" alias="Map"/>
+		<typeAlias type="com.iu.member.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.iu.util.PageMaker" alias="PageMaker"/>
 		<typeAlias type="com.iu.board.BoardDTO" alias="BoardDTO"/>
 		<typeAlias type="com.iu.board.notice.NoticeDTO" alias="NoticeDTO"/>
-		<typeAlias type="com.iu.member.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.iu.board.qna.QnaDTO" alias="QnaDTO"/>
+		<typeAlias type="com.iu.board.productQna.ProductQnaVO" alias="ProductQnaVO"/>
+		<typeAlias type="com.iu.file.FileDTO" alias="FileDTO"/>
 		<typeAlias type="com.iu.file.MemberFileDTO" alias="MemberFileDTO"/>
 		<typeAlias type="com.iu.mall.product.ProductVO" alias="ProductVO"/>
 		<typeAlias type="com.iu.mall.product.OptionsVO" alias="OptionsVO"/>
