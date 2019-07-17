@@ -19,7 +19,6 @@ import com.iu.board.BoardDTO;
 import com.iu.board.qna.QnaDTO;
 import com.iu.board.qna.QnaService;
 import com.iu.util.PageMaker;
-import com.iu.validator.QnaDTOValidate;
 
 @Controller
 @RequestMapping(value = "/qna/")
@@ -95,8 +94,6 @@ public class QnaController {
 		ModelAndView mv = new ModelAndView();
 		//∞À¡ı
 
-		QnaDTOValidate qnaDTOValidate = new QnaDTOValidate();
-		qnaDTOValidate.validate(qnaDTO, bindingResult);
 		if(bindingResult.hasErrors()) {
 			mv.setViewName("board/boardWrite");
 		}else {

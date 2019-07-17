@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.iu.member.MemberDTO;
 import com.iu.member.MemberService;
 import com.iu.util.PageMaker;
-import com.iu.validator.MemberDTOValidate;
 
 @Controller
 @RequestMapping("/member/")
@@ -28,8 +28,6 @@ public class MemberController {
 	
 	@Inject
 	private MemberService memberService;
-	@Inject
-	private MemberDTOValidate memberDTOValidate;
 	
 	//adminPage
 	
@@ -59,9 +57,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "memberJoin", method = RequestMethod.POST)
-	public ModelAndView setWrite(MemberDTO memberDTO, MultipartFile photo, HttpSession session, BindingResult bindingResult)throws Exception{
+	public ModelAndView setWrite(MemberDTO memberDTO, BindingResult bindingResult, MultipartFile photo, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		memberDTOValidate.validate(memberDTO, bindingResult);
 		if(bindingResult.hasErrors()) {
 			mv.setViewName("member/memberJoin");
 		} else {
