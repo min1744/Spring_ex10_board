@@ -60,7 +60,5 @@ public class QnaDAO implements BoardDAO{
 	@Override
 	public List<BoardDTO> getList(PageMaker pageMaker) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"getList", pageMaker);
-	}
-
-	
+	}	
 }

@@ -111,9 +111,7 @@
 		<result property="ref" column="ref"/>
 		<result property="step" column="step"/>
 		<result property="depth" column="depth"/>
-		<collection property="files" javaType="java.util.List" ofType="FileDTO" resultMap="fileResult">
-			
-		</collection>
+		<collection property="files" javaType="java.util.List" ofType="FileDTO" resultMap="fileResult"/>
 	</resultMap>
 	
 	<resultMap type="FileDTO" id="fileResult">
@@ -122,5 +120,4 @@
 		<result property="fname" column="fname"/>
 		<result property="oname" column="oname"/>
 	</resultMap>
-	
 </mapper>

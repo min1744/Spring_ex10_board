@@ -26,7 +26,7 @@
 		//All check control
 		$(".check").click(function() {
 			var check = true;
-			$(".check").each(function() {
+			$(this).each(function() {
 				if (!$(this).prop("checked")) {
 					check = false;
 				}
@@ -98,8 +98,7 @@
 				</tr>
 				<c:forEach items="${list}" var="memberDTO" varStatus="i">
 					<tr>
-						<td><input type="checkbox" class="check" name="id"
-							value="${memberDTO.id}"></td>
+						<td><input type="checkbox" class="check" name="id" value="${memberDTO.id}"></td>
 						<td>${memberDTO.id}</td>
 						<td>${memberDTO.email}</td>
 						<td>${memberDTO.grade}</td>

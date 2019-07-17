@@ -30,7 +30,7 @@ public class AjaxController {
 	}
 	
 	@RequestMapping(value ="/ajax/summerFileUpload", method = RequestMethod.POST)
-	   public ModelAndView summerFileUplad(MultipartFile file,HttpSession session) throws Exception{
+	   public ModelAndView summerFileUpload(MultipartFile file,HttpSession session) throws Exception{
 	      String fileName = session.getServletContext().getContextPath();//route 이름
 	      fileName = fileName + File.separator + "resources" + File.separator + "summernote" + File.separator;
 	      //fileName = fileName+"/resources/summernote/";

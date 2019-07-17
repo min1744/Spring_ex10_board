@@ -69,9 +69,9 @@
 						data=data.trim();
 						if(data=='1'){
 							select.parent().remove();
-							count--;
 							select.remove();
-						}else {
+							count--;
+						} else {
 							alert("File Delete Fail");
 						}
 					}

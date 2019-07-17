@@ -30,7 +30,7 @@ public class QnaController {
 	@ModelAttribute("board")
 	public String board() {
 		return "qna";
-	} 
+	}
 	
 	
 	@RequestMapping(value = "qnaDelete", method = RequestMethod.GET)
@@ -53,7 +53,6 @@ public class QnaController {
 		mv.setViewName("redirect:./qnaList");
 		return mv;
 	}
-	
 	//reply form
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
 	public ModelAndView setReply(int num)throws Exception{
@@ -105,7 +104,7 @@ public class QnaController {
 
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.GET)
-	public String setWrite(Model model)throws Exception{
+	public String setWrite()throws Exception{
 		//model.addAttribute("board", "qna");
 		return "board/boardWrite";
 	}
