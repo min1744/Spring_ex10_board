@@ -39,7 +39,6 @@ public class MemberService {
 	}
 	
 	public int setWrite(MemberDTO memberDTO, MultipartFile photo, HttpSession session)throws Exception{
-		//1.저장 경로
 		String realPath = session.getServletContext().getRealPath("/resources/member");
 		System.out.println(realPath);
 		String fname = fileSaver.saveFile(realPath, photo);

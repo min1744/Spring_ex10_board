@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,27 +19,28 @@ import com.iu.board.BoardDTO;
 import com.iu.board.qna.QnaDTO;
 import com.iu.board.qna.QnaService;
 import com.iu.util.PageMaker;
+import com.iu.validator.QnaDTOValidate;
 
 @Controller
 @RequestMapping(value = "/qna/")
 public class QnaController {
-	
+
 	@Inject
 	private QnaService qnaService;
-	
+
 	//model.addAttribute("board","qna") 
 	@ModelAttribute("board")
 	public String board() {
 		return "qna";
 	} 
-	
-	
+
+
 	@RequestMapping(value = "qnaDelete", method = RequestMethod.GET)
 	public String setDelete(int num, HttpSession session)throws Exception{
 		int result = qnaService.setDelete(num, session);
 		return "redirect:./qnaList";
 	}
-	
+
 	//reply
 	@RequestMapping(value = "qnaReply", method = RequestMethod.POST)
 	public ModelAndView setReply(BoardDTO qnaDTO, RedirectAttributes rd)throws Exception{
@@ -49,11 +51,11 @@ public class QnaController {
 			message="Reply Success";
 		}
 		rd.addFlashAttribute("message",message);
-		
+
 		mv.setViewName("redirect:./qnaList");
 		return mv;
 	}
-	
+
 	//reply form
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
 	public ModelAndView setReply(int num)throws Exception{
@@ -63,7 +65,7 @@ public class QnaController {
 		mv.setViewName("board/boardReply");
 		return mv;
 	}
-	
+
 	//update 
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.POST)
 	public ModelAndView setUpdate(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session)throws Exception{
@@ -72,7 +74,7 @@ public class QnaController {
 		mv.setViewName("redirect:./qnaList");
 		return mv;
 	}
-	
+
 	//update form
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.GET)
 	public ModelAndView setUpdate(int num)throws Exception{
@@ -85,20 +87,29 @@ public class QnaController {
 		mv.setViewName("board/boardUpdate");
 		return mv;
 	}
-	
-	
+
+
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.POST)
-	public ModelAndView setWrite(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session)throws Exception{
+	public ModelAndView setWrite(BoardDTO qnaDTO, List<MultipartFile> f1, HttpSession session, BindingResult bindingResult)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		int result = qnaService.setWrite(qnaDTO, f1, session);
-		
-		if(result>0) {
-			mv.setViewName("redirect:./qnaList");
+		//°ËÁõ
+
+		QnaDTOValidate qnaDTOValidate = new QnaDTOValidate();
+		qnaDTOValidate.validate(qnaDTO, bindingResult);
+		if(bindingResult.hasErrors()) {
+			mv.setViewName("board/boardWrite");
 		}else {
-			mv.addObject("message", "Write Fail");
-			mv.addObject("path", "./qnaList");
-			mv.setViewName("common/messageMove");
+
+			int result = qnaService.setWrite(qnaDTO, f1, session);
+
+			if(result>0) {
+				mv.setViewName("redirect:./qnaList");
+			}else {
+				mv.addObject("message", "Write Fail");
+				mv.addObject("path", "./qnaList");
+				mv.setViewName("common/messageMove");
+			}
 		}
 		return mv;
 	}
@@ -109,7 +120,7 @@ public class QnaController {
 		//model.addAttribute("board", "qna");
 		return "board/boardWrite";
 	}
-	
+
 	//select
 	@RequestMapping(value = "qnaSelect", method = RequestMethod.GET)
 	public ModelAndView getSelect(int num)throws Exception{
@@ -119,11 +130,11 @@ public class QnaController {
 		mv.setViewName("board/boardSelect");
 		return mv;
 	}
-	
+
 	//list
 	@RequestMapping(value = "qnaList", method = RequestMethod.GET)
 	public ModelAndView getList(PageMaker pageMaker)throws Exception{
-		
+
 		List<BoardDTO> lists = qnaService.getList(pageMaker);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", lists);
