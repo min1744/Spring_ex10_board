@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberMapper">
+
+	<sql id="colums">
+		id, pw, name, email, grade
+	</sql>
+	
+	<insert id="setWrite" parameterType="MemberDTO">
+		insert into member  (<include refid="colums" />) values(#{id}, #{pw}, #{name}, #{email}, 3)
+	</insert>
+	
+<!-- 	<resultMap type="com.iu.member.MemberDTO" id="member">
+		<id property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+		<result property="grade" column="grade"/>
+		<result property="memberFileDTO.num" column="num"/>
+		<result property="memberFileDTO.fname" column="fname"/>
+		<result property="memberFileDTO.oname" column="oname"/>
+	</resultMap> -->
+	<resultMap type="MemberDTO" id="member">
+		<id property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+		<result property="grade" column="grade"/>
+		<association property="memberFileDTO" resultMap="fileResult" javaType="MemberFileDTO"></association>
+	</resultMap>
+	
+	<resultMap type="MemberFileDTO" id="fileResult">
+		<id property="num" column="num"/>
+		<result property="fname" column="fname"/>
+		<result property="oname" column="oname"/>
+	</resultMap>
+	
+	<select id="getSelect" resultMap="member" parameterType="MemberDTO">
+		select M.*, F.*
+		from member M full join MEMBERFILE F
+		on (M.id=F.id)
+		where M.id=#{id} and M.pw=#{pw}
+	</select>
+	
+	<select id="getList" resultMap="member" parameterType="PageMaker">
+		select * from
+		(select rownum R, MEM.* from
+		(select M.*, F.num, F.fname, F.oname from MEMBER M full join MEMBERFILE F on (M.id=F.id) where M.grade != 0 and
+		<choose>
+			<when test="kind == 2">
+				M.email
+			</when>
+			<when test="kind == 3">
+				M.grade
+			</when>
+			<otherwise>
+				M.id
+			</otherwise>
+		</choose>
+		like '%'||#{search}||'%' order by M.id asc) MEM) 
+		where R between #{startRow} and #{lastRow}
+	</select>
+	
+	<select id="getTotalCount" resultType="Integer">
+		select count(id) from member where grade != 0 and
+		<choose>
+			<when test="kind == 2">
+				email
+			</when>
+			<when test="kind == 3">
+				grade
+			</when>
+			<otherwise>
+				id
+			</otherwise>
+		</choose>
+		like '%'||#{search}||'%'
+	</select>
+	<delete id="setDelete" parameterType="java.util.List">
+		delete member where id in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>
