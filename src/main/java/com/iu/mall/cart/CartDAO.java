@@ -25,4 +25,8 @@ public class CartDAO {
 	public List<CartListVO> getList(String id) throws Exception{
 		return sqlSession.selectList(NAMESPACE+"getList", id);
 	}
+	
+	public int setDelete(Integer [] nums) throws Exception{
+		return sqlSession.delete(NAMESPACE+"setDelete", nums);
+	}
 }

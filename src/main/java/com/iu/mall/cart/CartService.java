@@ -1,5 +1,6 @@
 package com.iu.mall.cart;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,5 +27,10 @@ public class CartService {
 	public List<CartListVO> getList(HttpSession session) throws Exception{
 		String id = ((MemberDTO)session.getAttribute("member")).getId();
 		return cartDAO.getList(id);
+	}
+	
+	public int setDelete(Integer [] nums) throws Exception{
+		//List<Integer> list = Arrays.asList(nums);
+		return cartDAO.setDelete(nums);
 	}
 }

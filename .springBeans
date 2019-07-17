@@ -7,11 +7,8 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
-		<config>src/main/resources/spring/context-data.xml</config>
-		<config>src/main/resources/spring/context-file.xml</config>
-		<config>src/main/resources/spring/context-qna.xml</config>
-		<config>src/main/resources/spring/context-common.xml</config>
-		<config>src/main/resources/spring/context-notice.xml</config>
+		<config>src/main/resources/spring/context-message.xml</config>
+		<config>src/main/resources/spring/context-validator.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>

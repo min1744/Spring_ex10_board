@@ -15,4 +15,30 @@
 	<insert id="setWrite" parameterType="CartVO">
 		insert into cart values(product_seq.nextval, #{id}, #{pid}, #{options}, #{amount})
 	</insert>
+	
+	<delete id="setDelete" parameterType="java.util.Map">
+		delete cart where num in
+		<!-- 
+			collection 속성 : Map타입은 변수명으로, List타입은 'list'로, Array(배열)타입은 'array'로
+		
+			DAO
+			HashMap map = new HashMap();
+			( , map)
+			collection="map"
+			List ar = new ArrayList();
+			( , ar)
+			... myBatis 내부
+			Map list = new Map();
+			
+			collection="list"
+			
+			Array
+			... myBatis 내부
+			Map list = new Map();
+			collection="array"
+			 -->
+		<foreach collection="array" item="item" open="(" separator=", " close=")">
+			#{item}
+		</foreach>
+	</delete>
 </mapper>

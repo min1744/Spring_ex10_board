@@ -8,6 +8,9 @@
 	<sql id="colums">
 		id, pw, name, email, grade
 	</sql>
+	<select id="getId" parameterType="MemberDTO" resultType="MemberDTO">
+		select id from member where id = #{id}
+	</select>
 	
 	<insert id="setWrite" parameterType="MemberDTO">
 		insert into member  (<include refid="colums" />) values(#{id}, #{pw}, #{name}, #{email}, 3)
@@ -79,7 +82,7 @@
 		</choose>
 		like '%'||#{search}||'%'
 	</select>
-	<delete id="setDelete" parameterType="java.util.List">
+	<delete id="setDelete" parameterType="List">
 		delete member where id in
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			#{item}

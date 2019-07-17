@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,16 +13,17 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Member Login Form</h1>
+		<h1><spring:message code="test" text="DefaultMessage"></spring:message>  Login Form</h1>
+		<h1><spring:message code="test2" text="No Code"></spring:message></h1>
 		
 		<form action="./memberLogin" method="post">
 		  <div class="form-group">
 		    <label for="id">ID:</label>
-		    <input type="text" class="form-control" id="id" name="id">
+		    <input type="text" value="admin" class="form-control" id="id" name="id">
 		  </div>
 		  <div class="form-group">
 		    <label for="password">PASSWORD:</label>
-		    <input type="password" class="form-control" id="pw" name="pw">
+		    <input type="password" value="admin" class="form-control" id="pw" name="pw">
 		  </div>
 		  
 		  
@@ -29,6 +31,6 @@
 		</form>
 		
 	</div>
-
+		<h1>${mem}</h1>
 </body>
 </html>

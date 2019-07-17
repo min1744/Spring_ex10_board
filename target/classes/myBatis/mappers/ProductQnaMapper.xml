@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductQnaMapper">
+	<insert id="setWrite" parameterType="ProductQnaVO">
+		INSERT INTO PRODUCTQNA VALUES(
+			PRODUCT_SEQ.NEXTVAL, 
+			#{title}, 
+			#{writer}, 
+			#{contents}, 
+			SYSDATE, 
+			0, 
+			PRODUCT_SEQ.CURRVAL, 
+			0, 
+			0, 
+			#{pid}
+		)
+	</insert>
+	
+	<select id="getList" resultType="ProductQnaVO" parameterType="Map">
+		SELECT * FROM
+			(SELECT ROWNUM R, P.* FROM
+				(SELECT * FROM PRODUCTQNA WHERE PID = ${pid} ORDER BY REF DESC, STEP ASC)
+			P)
+		WHERE R BETWEEN #{pager.startRow} AND #{pager.lastRow}
+	</select>
+	
+	<select id="getSelect" resultType="ProductQnaVO" parameterType="Integer">
+		SELECT * FROM PRODUCTQNA WHERE NUM = #{num}
+	</select>
+</mapper>

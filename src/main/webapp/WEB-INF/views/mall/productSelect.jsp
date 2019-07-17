@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<c:import url="../temp/boot.jsp"></c:import>
+<c:import url="../temp/boot.jsp"/>
+<c:import url="../temp/summernote.jsp"/>
 </head>
 <body>
 	<div class="container">
@@ -87,8 +88,88 @@
 				${product.mainContents}
 			</div>
 		</div>
+		<!-- QNA -->
+		<div class="container">
+			<div class="form-group">
+		      <label for="writer">Writer:</label>
+		      <input type="text" class="form-control" id="writer" placeholder="Enter writer" name="writer">
+		    </div>
+		    
+		    <div class="form-group">
+		      <label for="title">Title:</label>
+		      <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+		    </div>
+		    
+		     <div class="form-group">
+		      <label for="contents">Contents:</label>
+		      <textarea class="form-control" id="contents2" rows="15" cols="" name="contents"></textarea>
+		    </div>
+		</div>
+		<button id="qnaWrite" class="btn btn-primary">Write</button>
 	</div>
+	<!-- Test Select  -->
+   <div class="container">
+   		<button  id="select" class="btn btn-danger">SELECT</button>
+      	<button  id="list" class="btn btn-danger">LIST</button>
+      	<div id="result"></div>
+   </div>
+	<script type="text/javascript" src="../resources/js/summernote.js"></script>
 	<script type="text/javascript">
+		$("#list").click(function() {
+			$.ajax({
+				url:"../productQna/productQnaList/T1563151766460",
+				type:"GET",
+				success:function(data){//[{"contents":"t2","writer":"t2"},{"contents":"t1","writer":"t1"}]
+					//data = JSON.parse(data); : 문자열을 JSON으로 변환
+					//JSON.stringify(obj); : JSON을 문자열로 변환
+					var r = '<table class="table table-hover">';
+					$(data).each(function() {
+						r = r+"<tr>";
+						r = r+"<td>"+this.contents+"<td>";
+						r = r+"<td>"+this.writer+"<td>";
+						r = r+"<tr>";
+					});
+					r = r+"<table>";
+					$("#result").html(r);
+				}
+			});
+		});
+		
+		$("#select").click(function() {
+			$.ajax({
+				url:"../productQna/productQnaSelect",
+				type:"GET",
+				data:{
+					num:24
+				},success:function(data){
+					data = JSON.parse(data);//문자열을 JSON으로 변환
+					//JSON.stringify(obj); : JSON을 문자열로 변환
+					alert(data.writer);
+					alert(data.contents);
+				}
+			});
+		});
+		
+		$("#qnaWrite").click(function() {
+	         var writer = $("#writer").val();
+	         var title = $("#title").val();
+	         var contents =$('#summernote2').summernote('code');
+	         var pid = '${produce.pid}';
+	         
+	         $.ajax({
+	            url:"../productQna/productQnaWrite",
+	            type:"POST",
+	            data:{
+	               writer:writer,
+	               title:title,
+	               contents:contents,
+	               pid:pid
+	            },success:function(data){
+	               console.log(data);
+	            }
+	         });
+	      });
+	
 		$("#addCart").click(function() {
 			var pid = $("#pid").val();
 			var options = $("#options").val();
