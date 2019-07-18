@@ -19,6 +19,7 @@ public class QnaDTOValidate implements Validator {
 		BoardDTO boardDTO = (BoardDTO)target;
 		//title 검증
 		if(boardDTO.getTitle()== null || boardDTO.getTitle().length()==0) {
+			//errors.rejectValue("form의 path", "properties의 key");
 			errors.rejectValue("title", "title.require");
 		}
 		
