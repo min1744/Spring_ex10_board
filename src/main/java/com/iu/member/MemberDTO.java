@@ -6,7 +6,11 @@ import javax.validation.constraints.Size;
 import com.iu.file.MemberFileDTO;
 
 public class MemberDTO {
+	
+	//ex)	Size.memberDTO.id
+	//		NotNull.memberDTO.pw
 	@NotNull
+	@Size(min = 6, max = 15)
 	private String id;
 	@NotNull
 	@Size(min = 6, max = 12)

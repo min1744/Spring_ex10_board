@@ -30,7 +30,6 @@ public class MemberController {
 	private MemberService memberService;
 	
 	//adminPage
-	
 	@RequestMapping(value = "memberAdmin", method = RequestMethod.POST)
 	public String memberAdmin(String [] id) throws Exception{
 		memberService.setDelete(id);
@@ -57,7 +56,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "memberJoin", method = RequestMethod.POST)
-	public ModelAndView setWrite(MemberDTO memberDTO, BindingResult bindingResult, MultipartFile photo, HttpSession session)throws Exception{
+	public ModelAndView setWrite(@Valid MemberDTO memberDTO, BindingResult bindingResult, MultipartFile photo, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		if(bindingResult.hasErrors()) {
 			mv.setViewName("member/memberJoin");

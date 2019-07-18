@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,23 @@ public class QnaController {
 	public String board() {
 		return "qna";
 	} 
-
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public void getNumber() {
+		
+	}
+	
+	@ExceptionHandler(NullPointerException.class)
+	public ModelAndView getNull() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("error/error404");
+		return mv;
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public void getException() {
+		
+	}
 
 	@RequestMapping(value = "qnaDelete", method = RequestMethod.GET)
 	public String setDelete(int num, HttpSession session)throws Exception{
@@ -113,7 +130,7 @@ public class QnaController {
 
 	//write
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.GET)
-	public String setWrite(Model model)throws Exception{
+	public String setWrite(BoardDTO boardDTO, Model model)throws Exception{
 		//model.addAttribute("board", "qna");
 		return "board/boardWrite";
 	}
@@ -138,6 +155,7 @@ public class QnaController {
 		//mv.addObject("board", "qna");
 		mv.addObject("pager", pageMaker);
 		mv.setViewName("board/boardList");
+		
 		return mv;
 	}
 }

@@ -29,10 +29,21 @@
 	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
 		<beans:property name="order" value="0" />
 	</beans:bean>
+	<beans:bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<beans:property name="location" value="classpath:/properties/DataSource.properties" />
+	</beans:bean>
 	
 	<beans:bean class="com.iu.interceptor.QnaInterceptor" id="qnaInterceptor" />
+		<beans:bean class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<beans:property name="defaultLocale" value="ko"></beans:property>
+	</beans:bean>
 	
 	<interceptors>
+		
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" id="localeChangeInterceptor">
+			<beans:property name="paramName" value="lang"></beans:property>
+		</beans:bean>
+	
 		<interceptor>
 			<mapping path="/qna/*"/>
 			<beans:ref bean="qnaInterceptor"/>
@@ -43,20 +54,14 @@
 		</interceptor>
 	</interceptors>
 	
-	<beans:bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<beans:property name="location" value="classpath:/properties/DataSource.properties" />
-	</beans:bean>
-	
-	
-	
 	<context:component-scan base-package="com.iu.s10" />
 	<context:component-scan base-package="com.iu.member" />
 	<context:component-scan base-package="com.iu.file" />
 	<context:component-scan base-package="com.iu.transfer" />
 	<context:component-scan base-package="com.iu.common" />
-	<context:component-scan base-package="com.iu.mall.product" />
+	<context:component-scan base-package="com.iu.mall.product"/>
 	<context:component-scan base-package="com.iu.mall.cart" />
-	<context:component-scan base-package="com.iu.board.productQna" />
+	<context:component-scan base-package="com.iu.board.productQna"/>
 	
 	<beans:import resource="classpath:/spring/*"/>
 	<!-- <beans:import resource="classpath:/spring/context-file.xml"/>

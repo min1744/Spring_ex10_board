@@ -11,7 +11,7 @@ import com.iu.member.MemberDTO;
 
 public class QnaInterceptor extends HandlerInterceptorAdapter {
 	
-	//ì»¨íŠ¸ë¡¤ëŸ¬ ì§„ì… ì „
+	//ÄÁÆ®·Ñ·¯ ÁøÀÔ Àü
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		HttpSession session = request.getSession();
@@ -23,19 +23,19 @@ public class QnaInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect("../member/memberLogin");
 		}
 		
-		//returnì´ trueë©´ ë‹¤ìŒ ìˆœì„œì¸ ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ì´ë™O
-		//returnì´ falseë©´ ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ì´ë™X
+		//returnÀÌ true¸é ´ÙÀ½ ¼ø¼­ÀÎ ÄÁÆ®·Ñ·¯·Î ÀÌµ¿
+		//returnÀÌ false¸é ÄÁÆ®·Ñ·¯·Î ÀÌµ¿X
 		return result;
 	}
 
-	//ì»¨íŠ¸ë¡¤ëŸ¬ ì§„ì… í›„
+	//ÄÁÆ®·Ñ·¯ ÁøÀÔ ÈÄ
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
 		super.postHandle(request, response, handler, modelAndView);
 	}
 
-	//jspë¥¼ ë Œë”ë§ í›„
+	//jsp ·»´õ¸µ ÈÄ
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		// TODO Auto-generated method stub
