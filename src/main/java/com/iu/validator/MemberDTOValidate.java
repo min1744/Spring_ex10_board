@@ -35,16 +35,10 @@ public class MemberDTOValidate implements Validator {
 		boolean check3 = Pattern.matches(ex3, id);
 		boolean check4 = Pattern.matches(ex4, id);
 		boolean check5 = Pattern.matches(ex5, id);
-		System.out.println("¼Ò¹®ÀÚ : "+check1);
-		System.out.println("´ë¹®ÀÚ : "+check2);
-		System.out.println("¼ýÀÚ : "+check3);
-		System.out.println("Æ¯¼ö¹®ÀÚ : "+check4);
-		System.out.println("10~15ÀÚ¸® : "+check5);
-		System.out.println("==========");
 		
 		//id
 		if(id == null || id.length() == 0) {
-			//errors.rejectValue("¸â¹öº¯¼ö¸í", "properties key");
+			//errors.rejectValue("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "properties key");
 			errors.rejectValue("id", "member.id");
 		} else {
 			try {
