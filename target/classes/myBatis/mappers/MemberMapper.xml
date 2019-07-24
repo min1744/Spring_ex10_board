@@ -67,7 +67,7 @@
 		where R between #{startRow} and #{lastRow}
 	</select>
 	
-	<select id="getTotalCount" resultType="Integer">
+	<select id="getTotalCount" parameterType="PageMaker" resultType="Integer">
 		select count(id) from member where grade != 0 and
 		<choose>
 			<when test="kind == 2">
